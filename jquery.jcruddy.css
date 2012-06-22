@@ -1,0 +1,114 @@
+
+
+/************************* Base **************************************/
+
+body {
+    font-family: 'Helvetica Neue',Arial,Helvetica,sans-serif;
+    font-size: 14px;
+}
+
+/***
+* Icons
+***/
+.icon{
+  background-color:#ddd;
+	text-decoration:none;	
+	color: #222222;
+    display: inline-block;
+    font-size: 1.2em;
+    text-align: center ;
+	height:30px;	
+	line-height: 30px;		
+}
+
+.icon span{
+	padding:0 10px
+}
+
+.icon-grey{	
+	background-color:#8DC63F;
+	color:#eee;
+}
+.icon-red{	
+	background-color:#B41000;
+	color:#eee;
+}
+.icon-green{
+	background-color:#8DC63F;
+	color:#eee;
+}
+
+/************************* Modules ***********************************/
+
+/***
+* Datatable ******************************
+***/
+.jcruddyTable th {	
+	background-color:#222222;
+	color:#eee;
+}
+
+.jcruddyTable td ,.jcruddyTable th {	
+	padding:3px 3px;
+}
+
+.jcruddyTable .jcruddyDataRow:last-child .downButton , .jcruddyTable .jcruddyDataRow:nth-child(2) .upButton {
+    display: none;
+}
+
+/***
+* Dialog *********************************
+***/
+.jcruddyDialogItems div{
+	margin-bottom:10px;
+}
+
+.jcruddyDialogItems input{
+	margin-right:5px;
+}
+
+.jcruddyDialogButtons{
+	float:left;
+	width:100%;
+}
+
+.jcruddyDialogCancel{
+	float:left;
+}
+
+.jcruddyDialogSubmit{
+	float:right;
+}
+
+.jcruddyDialog{
+	float:left;
+	position:absolute;
+	top:20px;
+	left:20px;
+	padding:0;
+}
+
+.jcruddyDialogHeader,.jcruddyDialogItems,.jcruddyDialogButtons{
+	float:left;
+	width:100%;
+	clear:both;
+}	
+
+.jcruddyDialogItems{padding:25px}
+
+.jcruddyDialogHeader .icon{
+	float:right;
+}		
+
+.jcruddyDialog h2{
+	padding: 0 0 0 10px;
+	margin:0;
+	float:left;
+}
+
+/************************* Theme *************************************/
+
+.jcruddyDialog{
+	background-color:#ddd;
+}
+
