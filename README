@@ -1,0 +1,25 @@
+# [jcruddy]( demo - http://bjw.co.nz/developer/jcruddy)
+
+jcruddy is a simple javascript array maniputalor that provides a simple interface for you to create, update, remove and re-order items in a javascript array
+This project is my first attempt at a jquery plugin and first time using github
+
+## Features
+
+* HTML5 ready
+* Cross-browser compatible (Chrome, Opera, Safari, Firefox 3.6+, IE6+).
+* Designed with progressive enhancement in mind.
+* Fontawesome easy integration
+* simple basic usage with advanced features available
+  ** Field title and attribute configuration
+  ** before and after optional functions when creating, updating, removing or moving items
+  ** allow/disallow repositioning of items  
+
+## License
+
+### Major components:
+* Font Awesome - http://fortawesome.github.com/Font-Awesome  : CC BY 3.0
+* jQuery: MIT/GPL license
+
+
+### Everything else:
+MIT/GPL license
