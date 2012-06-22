@@ -5,9 +5,8 @@
 			settings = jQuery.extend( {
 				"dataListFields" : "",
 				"dataFieldConfig" : [],
-				"allowMove" : true,
-				"background-color" : "blue",				  
-				"objects": [],
+				"allowMove" : true,		
+				"objects": [],				
 				"afterObjectAdd": function () {return true; },
 				"afterObjectRemove": function () {return true; },
 				"afterObjectUpdate": function () {return true; },
@@ -151,21 +150,23 @@
 				}
 			});	
 
-			jQuery(".jcruddyTable").on("click", ".editButton", function (event) {				
+			jQuery(".jcruddyTable", this).on("click", ".editButton", function (event) {
+				console.log(event);			
 				jQuery( "#" + dialogId + " h2" ).html("Edit array item" );					
 				jQuerythis.jcruddy("setDialogHtml",jQuerythis.jcruddy("getArrayObject",jQuery(this).attr("data-id")));
+				console.log("#"+dialogId)
 				jQuery("#"+dialogId).fadeIn();	
 			});	
 
-			jQuery(".jcruddyTable").on("click", ".upButton", function (event) {	
+			jQuery(".jcruddyTable", this).on("click", ".upButton", function (event) {	
 				jQuerythis.jcruddy("moveItem",jQuery(this).attr("data-id"),1);				
 			});
 			
-			jQuery(".jcruddyTable").on("click", ".downButton", function (event) {	
+			jQuery(".jcruddyTable", this).on("click", ".downButton", function (event) {	
 				jQuerythis.jcruddy("moveItem",jQuery(this).attr("data-id"),0);				
 			});	
 			
-			jQuery(".jcruddyTable").on("click", ".jcruddyAddItem", function (event) {				
+			jQuery(".jcruddyTable", this).on("click", ".jcruddyAddItem", function (event) {				
 				jQuery( "#"+dialogId +" h2" ).html("Add array item" );
 				jQuerythis.jcruddy("setDialogHtml",[]);
 				jQuery("#"+dialogId).fadeIn();
@@ -193,20 +194,50 @@
 				tmpObjects = jQuerythis.jcruddy("getArrayObjects"),	
 				sReturn = "<tr class='jcruddyTableHeader'>";
 
+			if(settings.dataListFields.length !== 0){
+				if (settings.dataFieldConfig.length !== 0) {
+					jQuery.each(settings.dataFieldConfig, function (index, item) {	
+						if(jQuery.inArray(item.field,settings.dataListFields) > -1 ){											
+							sReturn += "<th >"+item.title+"</th>";
+						}				
+					});
+				} else {
+					for (key in tmpObjects[0]) {
+						if(jQuery.inArray(key,settings.dataListFields) > -1 ){											
+							sReturn += "<th >"+key+"</th>";
+						}
+					}
+				}
+			} else {
+				if (settings.dataFieldConfig.length !== 0) {
+					jQuery.each(settings.dataFieldConfig, function (index, item) {	
+							sReturn += "<th >"+item.title+"</th>";
+					});
+				} else {
+					for (key in tmpObjects[0]) {
+							sReturn += "<th >"+key+"</th>";
+					}
+				}			
+			
+			
+			}
+				/*
 			if (settings.dataFieldConfig.length !== 0) {
 				jQuery.each(settings.dataFieldConfig, function (index, item) {	
 					if(settings.dataListFields.length !== 0 && jQuery.inArray(item.field,settings.dataListFields) > -1 ){											
 						sReturn += "<th >"+item.title+"</th>";
-					} 					
+					}				
 				});
 			} else if (settings.dataListFields.length !== 0) {
 				jQuery.each(settings.dataListFields, function (index, item) {					
 					sReturn += "<th >"+item+"</th>";
 				});			
 			} else {
-				return "";
+				for (key in tmpObjects[0]) {
+					sReturn += "<th>"+key+"</th>";
+				}			
 			}			
-
+			*/
 			sReturn += "<th >&nbsp;</th><th >&nbsp;</th><th >&nbsp;</th><th ><a href='javascript:;' title='Add Item' class='jcruddyAddItem icon-plus icon'><span>Add Item</span></a></th></tr>";			
 			return sReturn;
 		},		
@@ -251,9 +282,9 @@
 			dialogHtml += "<div class='jcruddyDialogButtons'><a class='jcruddyDialogCancel icon icon-arrow-left icon-red' href='javascript:;'><span>Cancel</span></a><a class='jcruddyDialogSubmit icon icon-ok icon-green' href='javascript:;'><span>Submit</span></a></div>";
 			dialogHtml += "</div>";
 
-			jQuerythis.append(dialogHtml);	
+			jQuerythis.prepend(dialogHtml);	
 			jQuery("#"+dialogId).hide();
-			jQuery(".jcruddyDialogSubmit").click(function (index, item) {			
+			jQuery(".jcruddyDialogSubmit", this).click(function (index, item) {			
 				var tmpObj = [],
 					origId = jQuery("#"+dialogId+" input[name='jcruddyDialogItemId']").val();					
 
@@ -275,7 +306,7 @@
 				}
 			});	
 
-			jQuery(".jcruddyDialogCancel, .jcruddyDialogHeader a.icon").click(function (index, item) {	
+			jQuery(".jcruddyDialogCancel, .jcruddyDialogHeader a.icon",this).click(function (index, item) {	
 				jQuery("#"+dialogId).fadeOut('fast');
 			});	
 
@@ -304,7 +335,7 @@
 					var val = (isNew) ? "" : obj[item.field];						
 					sHtml += "<div><input name='"+item.field+"' value='"+val+"' type='"+item.type+"' "+item.options+"  /><label>"+item.title+"</label></div>";
 				});				
-			} else if (settings.dataListFields.length !== 0) {
+			} else {
 				if (isNew) {						
 					for (key in tmpObjects[0]) {
 						sHtml += "<div><input name='"+key+"' value='' /><label>"+key+"</label></div>";
@@ -316,7 +347,7 @@
 					}
 				}				
 			}
-
+			console.log(sHtml)
 			jQuery("#"+jQuery(this).attr("id") +"Dialog .jcruddyDialogItems").append(sHtml);
 			return jQuerythis;
 		},		
@@ -439,7 +470,7 @@
 		} else {
 			jQuery.error( "Method " +  method + " does not exist in jcruddy" );
 		} 
-
-		var thisID = "#" + jQuery(this).attr("id");				
+				
+		return this;		
 	};  
 })(jQuery,jQuery);
