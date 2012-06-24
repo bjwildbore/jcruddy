@@ -221,23 +221,7 @@
 			
 			
 			}
-				/*
-			if (settings.dataFieldConfig.length !== 0) {
-				jQuery.each(settings.dataFieldConfig, function (index, item) {	
-					if(settings.dataListFields.length !== 0 && jQuery.inArray(item.field,settings.dataListFields) > -1 ){											
-						sReturn += "<th >"+item.title+"</th>";
-					}				
-				});
-			} else if (settings.dataListFields.length !== 0) {
-				jQuery.each(settings.dataListFields, function (index, item) {					
-					sReturn += "<th >"+item+"</th>";
-				});			
-			} else {
-				for (key in tmpObjects[0]) {
-					sReturn += "<th>"+key+"</th>";
-				}			
-			}			
-			*/
+
 			sReturn += "<th >&nbsp;</th><th >&nbsp;</th><th >&nbsp;</th><th ><a href='javascript:;' title='Add Item' class='jcruddyAddItem icon-plus icon'><span>Add Item</span></a></th></tr>";			
 			return sReturn;
 		},		
