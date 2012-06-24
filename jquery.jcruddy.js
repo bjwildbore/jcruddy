@@ -8,7 +8,7 @@
 				"dataFieldConfig" : [],
 				"showMove" : true,		
 				"objects": [],	
-				"hideDialogId" : true,
+				"showDialogId" : true,
 				"afterObjectAdd": function () {return true; },
 				"afterObjectRemove": function () {return true; },
 				"afterObjectUpdate": function () {return true; },
@@ -45,16 +45,14 @@
 			// find the item in the array and place it after
 			for ( i = 0, len = objects.length; i < len; i++) {			
 				newItem = [];	
-				newItem.id = objects[i][settings.idField];				
+				//newItem.id = objects[i][settings.idField];				
 				//newItem = objects[i];
 				
 				for (var key in objects[i]){
 					if(jQuery.inArray(key,settings.ignoreFields) <= -1 ){											
 						newItem[key] = objects[i][key];
 					}					
-				}
-			
-				
+				}			
 				
 				newObjects.push(newItem);
 				//console.log(newItem);
@@ -389,7 +387,7 @@
 				jQuery("#"+jQuerythis.attr("id") +"Dialog input[name='id']").val(Math.round((new Date()).getTime()));
 			}
 			
-			if(settings.hideDialogId){
+			if(!settings.showDialogId){
 				//console.log('hide')
 				jQuery("#"+jQuerythis.attr("id") +"Dialog input[name='id']").parent().hide();
 			}			
