@@ -200,7 +200,7 @@
 
 			jQuery(".jcruddyTable", this).on("click", ".editButton", function (event) {
 				//console.log(event);			
-				jQuery( "#" + dialogId + " h2" ).html("Edit array item" );					
+				jQuery( "#" + dialogId + " h2" ).html("Edit item" );					
 				jQuerythis.jcruddy("setDialogHtml",jQuerythis.jcruddy("getArrayObject",jQuery(this).attr("data-id")));
 				//console.log("#"+dialogId)
 				jQuery("#"+dialogId).fadeIn();	
@@ -215,7 +215,7 @@
 			});	
 			
 			jQuery(".jcruddyTable", this).on("click", ".jcruddyAddItem", function (event) {				
-				jQuery( "#"+dialogId +" h2" ).html("Add array item" );
+				jQuery( "#"+dialogId +" h2" ).html("Add item" );
 				jQuerythis.jcruddy("setDialogHtml",[]);
 				jQuery("#"+dialogId).fadeIn();
 			});				
@@ -305,9 +305,9 @@
 		renderDialog: function () {
 			var jQuerythis = jQuery(this),	
 				dialogId = jQuery(this).attr("id")+"Dialog",
-				dialogHtml = "<div class='jcruddyDialog' title='Array Item' id='"+dialogId+"'>";
+				dialogHtml = "<div class='jcruddyDialog' title='Item' id='"+dialogId+"'>";
 				
-			dialogHtml += "<div class='jcruddyDialogHeader'><h2>New Array Item</h2><a class='icon icon-remove icon-red' href='javascript:;'><span>Close</span></a></div>";
+			dialogHtml += "<div class='jcruddyDialogHeader'><h2>New Item</h2><a class='icon icon-remove icon-red' href='javascript:;'><span>Close</span></a></div>";
 			dialogHtml += "<div class='jcruddyDialogItems'></div>";
 			
 			dialogHtml += "<div class='jcruddyDialogButtons'><a class='jcruddyDialogCancel icon icon-arrow-left icon-red' href='javascript:;'><span>Cancel</span></a><a class='jcruddyDialogSubmit icon icon-ok icon-green' href='javascript:;'><span>Submit</span></a></div>";
