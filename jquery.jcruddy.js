@@ -4,9 +4,11 @@
 			var jQuerythis = jQuery(this),
 			settings = jQuery.extend( {
 				"dataListFields" : "",
+				"ignoreFields" : "",				
 				"dataFieldConfig" : [],
-				"allowMove" : true,		
-				"objects": [],				
+				"showMove" : true,		
+				"objects": [],	
+				"hideDialogId" : true,
 				"afterObjectAdd": function () {return true; },
 				"afterObjectRemove": function () {return true; },
 				"afterObjectUpdate": function () {return true; },
@@ -21,11 +23,50 @@
 				settings.dataListFields = settings.dataListFields.split(",");
 			}
 
+			if (settings.ignoreFields.length){
+				settings.ignoreFields = settings.ignoreFields.split(",");
+			}
+			
 			jQuerythis.data("settings", settings);
-			jQuerythis.jcruddy("setArrayObjects",settings.objects);
+			jQuerythis.jcruddy("initArray",settings.objects);
+			//jQuerythis.jcruddy("setArrayObjects",settings.objects);
 			jQuerythis.jcruddy("renderDataTable"); 
 			jQuerythis.jcruddy("renderDialog");
 		},	
+
+		initArray: function (objects) {	
+			var i = 0,
+				len = 0,
+				newItem = [],
+				jQuerythis = jQuery(this),
+				settings = jQuerythis.data("settings"),
+				newObjects = [];
+				
+			// find the item in the array and place it after
+			for ( i = 0, len = objects.length; i < len; i++) {			
+				newItem = [];	
+				newItem.id = objects[i][settings.idField];				
+				//newItem = objects[i];
+				
+				for (var key in objects[i]){
+					if(jQuery.inArray(key,settings.ignoreFields) <= -1 ){											
+						newItem[key] = objects[i][key];
+					}					
+				}
+			
+				
+				
+				newObjects.push(newItem);
+				//console.log(newItem);
+			}	
+			
+			
+			jQuerythis.jcruddy("setArrayObjects",newObjects);
+			return jQuerythis;
+		},
+
+
+
 		
 		getArrayObjects: function () {
 			return jQuery(this).data("objects");
@@ -142,19 +183,28 @@
 			jQuerythis.append(dataTableHtml);	
 
 			jQuery(".jcruddyTable").on("click.jcruddy", "a.removeButton", function (event) {
-				jQuerythis.jcruddy("removeArrayObject",jQuery(this).attr("data-id")); 
+				var obj = jQuerythis.jcruddy("getArrayObject",jQuery(this).attr("data-id"));
+			
+				if (typeof settings.beforeObjectRemove === "function") { // make sure the callback is a function
+					if (!settings.beforeObjectRemove.call(this,obj)) { 
+						return false;
+					}				
+				}	
+
+				
+				jQuerythis.jcruddy("removeArrayObject",obj); 
 				jQuery(this).closest("tr").remove();
 
 				if (typeof settings.afterObjectRemove === "function") { // make sure the callback is a function
-					settings.afterObjectRemove.call(this); // brings the scope to the callback
+					settings.afterObjectRemove.call(this,obj); // brings the scope to the callback
 				}
 			});	
 
 			jQuery(".jcruddyTable", this).on("click", ".editButton", function (event) {
-				console.log(event);			
+				//console.log(event);			
 				jQuery( "#" + dialogId + " h2" ).html("Edit array item" );					
 				jQuerythis.jcruddy("setDialogHtml",jQuerythis.jcruddy("getArrayObject",jQuery(this).attr("data-id")));
-				console.log("#"+dialogId)
+				//console.log("#"+dialogId)
 				jQuery("#"+dialogId).fadeIn();	
 			});	
 
@@ -217,11 +267,10 @@
 					for (key in tmpObjects[0]) {
 							sReturn += "<th >"+key+"</th>";
 					}
-				}			
-			
+				}		
 			
 			}
-
+				
 			sReturn += "<th >&nbsp;</th><th >&nbsp;</th><th >&nbsp;</th><th ><a href='javascript:;' title='Add Item' class='jcruddyAddItem icon-plus icon'><span>Add Item</span></a></th></tr>";			
 			return sReturn;
 		},		
@@ -243,7 +292,7 @@
 					sReturn += "<td>"+item[key]+"</td>";
 				}				
 			}	
-			if(settings.allowMove){
+			if(settings.showMove){
 				sReturn += "<td><a href='javascript:;' class='downButton icon icon-chevron-down' title='Down' data-id='"+item.id+"'><span>Down</span></a></td>";
 				sReturn += "<td><a href='javascript:;' class='upButton icon icon-chevron-up' title='Up' data-id='"+item.id+"'><span>Up</span></a></td>";
 			} else {
@@ -306,7 +355,7 @@
 				value="",
 				isNew = (obj.id) ? false : true;
 			
-			jQuery("#"+jQuery(this).attr("id") +"Dialog .jcruddyDialogItems").empty();
+			jQuery("#"+jQuerythis.attr("id") +"Dialog .jcruddyDialogItems").empty();
 
 			if (isNew) {
 				sHtml += "<input name='jcruddyDialogItemId' type='hidden' value='' />";				
@@ -331,8 +380,20 @@
 					}
 				}				
 			}
-			console.log(sHtml)
-			jQuery("#"+jQuery(this).attr("id") +"Dialog .jcruddyDialogItems").append(sHtml);
+			//console.log(sHtml)
+
+			
+			jQuery("#"+jQuerythis.attr("id") +"Dialog .jcruddyDialogItems").append(sHtml);
+
+			if(jQuery("#"+jQuerythis.attr("id") +"Dialog input[name='id']").val() == "" ){
+				jQuery("#"+jQuerythis.attr("id") +"Dialog input[name='id']").val(Math.round((new Date()).getTime()));
+			}
+			
+			if(settings.hideDialogId){
+				//console.log('hide')
+				jQuery("#"+jQuerythis.attr("id") +"Dialog input[name='id']").parent().hide();
+			}			
+			
 			return jQuerythis;
 		},		
 
@@ -349,6 +410,9 @@
 			return true;
 		},
 
+		
+		
+		
 		createItem: function (obj) {
 			var jQuerythis = jQuery(this),		
 				settings = jQuerythis.data("settings"),
@@ -356,7 +420,7 @@
 				sHtml = '';
 
 			if (typeof settings.beforeObjectAdd === "function") { 
-				if (!settings.beforeObjectAdd.call(this)) { 
+				if (!settings.beforeObjectAdd.call(this,obj)) { 
 					return false;
 				}
 			}					
@@ -370,12 +434,15 @@
 				jQuerythis.jcruddy("addArrayObject",obj); 
 				
 				if (typeof settings.afterObjectAdd === "function") {
-					settings.afterObjectAdd.call(this);
+					//console.log('rture1')
+					var x = settings.afterObjectAdd.call(this,obj);
+					//console.log('rture2')
 				}	
 			} else {
 				alert("Non unique Id");
 				return false;
 			}
+			//console.log('rture');
 			return true;
 		},	
 
@@ -387,7 +454,7 @@
 				trId = jQuery(this).attr("id")+"Tr";				
 
 			if (typeof settings.beforeObjectUpdate === "function") { 
-				if (!settings.beforeObjectUpdate.call(this)) {
+				if (!settings.beforeObjectUpdate.call(this,obj)) {
 					return false;
 				}
 			}	
@@ -403,7 +470,7 @@
 			jQuerythis.jcruddy("setArrayObject",obj,origid);
 
 			if (typeof settings.afterObjectUpdate === "function") {
-				settings.afterObjectUpdate.call(this);
+				settings.afterObjectUpdate.call(this,obj);
 			}	
 			return true;
 		},		
@@ -416,7 +483,7 @@
 				tmpObjects = [];
 
 			if (typeof settings.beforeObjectMove === "function") { 
-				if (!settings.beforeObjectMove.call(this)) { 
+				if (!settings.beforeObjectMove.call(this,obj)) { 
 					return false;
 				}
 			}
@@ -434,7 +501,7 @@
 			}	
 
 			if (typeof settings.afterObjectMove === "function") {
-				settings.afterObjectMove.call(this);
+				settings.afterObjectMove.call(this,obj);
 			}				
 						
 			return jQuerythis;
