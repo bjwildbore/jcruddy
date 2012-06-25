@@ -49,8 +49,10 @@
 				//newItem = objects[i];
 				
 				for (var key in objects[i]){
-					if(jQuery.inArray(key,settings.ignoreFields) <= -1 ){											
-						newItem[key] = objects[i][key];
+					if (objects[i].hasOwnProperty(key)){  
+						if(jQuery.inArray(key,settings.ignoreFields) <= -1 ){											
+							newItem[key] = objects[i][key];
+						}	
 					}					
 				}			
 				
@@ -252,8 +254,10 @@
 					});
 				} else {
 					for (key in tmpObjects[0]) {
-						if(jQuery.inArray(key,settings.dataListFields) > -1 ){											
-							sReturn += "<th >"+key+"</th>";
+						if (tmpObjects[0].hasOwnProperty(key)){  
+							if(jQuery.inArray(key,settings.dataListFields) > -1 ){											
+								sReturn += "<th >"+key+"</th>";
+							}
 						}
 					}
 				}
@@ -264,7 +268,9 @@
 					});
 				} else {
 					for (key in tmpObjects[0]) {
+						if (tmpObjects[0].hasOwnProperty(key)){  
 							sReturn += "<th >"+key+"</th>";
+						}
 					}
 				}		
 			
@@ -288,7 +294,9 @@
 				});			
 			} else {
 				for (key in item) {
-					sReturn += "<td>"+item[key]+"</td>";
+					if (item.hasOwnProperty(key)){  
+						sReturn += "<td>"+item[key]+"</td>";
+					}
 				}				
 			}	
 			if(settings.showMove){
@@ -370,12 +378,16 @@
 			} else {
 				if (isNew) {						
 					for (key in tmpObjects[0]) {
-						sHtml += "<div><input name='"+key+"' value='' /><label>"+key+"</label></div>";
+						if (tmpObjects[0].hasOwnProperty(key)){  
+							sHtml += "<div><input name='"+key+"' value='' /><label>"+key+"</label></div>";
+						}
 					}
 				}else{					
 					for (key in obj) {
-						value = obj[key];		
-						sHtml += "<div><input name='"+key+"' value='"+value+"' /><label>"+key+"</label></div>";
+						if (obj.hasOwnProperty(key)){  
+							value = obj[key];		
+							sHtml += "<div><input name='"+key+"' value='"+value+"' /><label>"+key+"</label></div>";
+						}
 					}
 				}				
 			}
@@ -416,7 +428,8 @@
 			var jQuerythis = jQuery(this),		
 				settings = jQuerythis.data("settings"),
 				trId = jQuery(this).attr("id")+"Tr",					
-				sHtml = '';
+				alert = "",
+				sHtml = "";
 
 			if (typeof settings.beforeObjectAdd === "function") { 
 				if (!settings.beforeObjectAdd.call(this,obj)) { 
