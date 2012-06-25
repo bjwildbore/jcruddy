@@ -9,6 +9,12 @@
 				"showMove" : true,		
 				"objects": [],	
 				"showDialogId" : true,
+				"onClickAdd": function () {return true; },
+				"onClickEdit": function () {return true; },
+				"onClickRemove": function () {return true; },
+				"onClickMoveUp": function () {return true; },
+				"onClickMoveDown": function () {return true; },
+				
 				"afterObjectAdd": function () {return true; },
 				"afterObjectRemove": function () {return true; },
 				"afterObjectUpdate": function () {return true; },
@@ -28,8 +34,8 @@
 			}
 			
 			jQuerythis.data("settings", settings);
+			
 			jQuerythis.jcruddy("initArray",settings.objects);
-			//jQuerythis.jcruddy("setArrayObjects",settings.objects);
 			jQuerythis.jcruddy("renderDataTable"); 
 			jQuerythis.jcruddy("renderDialog");
 		},	
@@ -64,8 +70,6 @@
 			jQuerythis.jcruddy("setArrayObjects",newObjects);
 			return jQuerythis;
 		},
-
-
 
 		
 		getArrayObjects: function () {
@@ -184,7 +188,14 @@
 
 			jQuery(".jcruddyTable").on("click.jcruddy", "a.removeButton", function (event) {
 				var obj = jQuerythis.jcruddy("getArrayObject",jQuery(this).attr("data-id"));
-			
+
+				if (typeof settings.onClickRemove === "function") { 
+					if (!settings.onClickRemove.call(this,event)) { 
+						return false;
+					}				
+				}				
+
+				
 				if (typeof settings.beforeObjectRemove === "function") { // make sure the callback is a function
 					if (!settings.beforeObjectRemove.call(this,obj)) { 
 						return false;
@@ -201,6 +212,13 @@
 			});	
 
 			jQuery(".jcruddyTable", this).on("click", ".editButton", function (event) {
+				
+				if (typeof settings.onClickEdit === "function") { 
+					if (!settings.onClickEdit.call(this,event)) { 
+						return false;
+					}				
+				}	
+				
 				//console.log(event);			
 				jQuery( "#" + dialogId + " h2" ).html("Edit item" );					
 				jQuerythis.jcruddy("setDialogHtml",jQuerythis.jcruddy("getArrayObject",jQuery(this).attr("data-id")));
@@ -209,14 +227,29 @@
 			});	
 
 			jQuery(".jcruddyTable", this).on("click", ".upButton", function (event) {	
+				if (typeof settings.onClickMoveUp === "function") { 
+					if (!settings.onClickMoveUp.call(this,event)) { 
+						return false;
+					}				
+				}	
 				jQuerythis.jcruddy("moveItem",jQuery(this).attr("data-id"),1);				
 			});
 			
 			jQuery(".jcruddyTable", this).on("click", ".downButton", function (event) {	
+				if (typeof settings.onClickMoveDown === "function") { 
+					if (!settings.onClickMoveDown.call(this,event)) { 
+						return false;
+					}				
+				}	
 				jQuerythis.jcruddy("moveItem",jQuery(this).attr("data-id"),0);				
 			});	
 			
 			jQuery(".jcruddyTable", this).on("click", ".jcruddyAddItem", function (event) {				
+				if (typeof settings.onClickAdd === "function") { 
+					if (!settings.onClickAdd.call(this,event)) { 
+						return false;
+					}				
+				}	
 				jQuery( "#"+dialogId +" h2" ).html("Add item" );
 				jQuerythis.jcruddy("setDialogHtml",[]);
 				jQuery("#"+dialogId).fadeIn();
@@ -420,9 +453,6 @@
 			}	
 			return true;
 		},
-
-		
-		
 		
 		createItem: function (obj) {
 			var jQuerythis = jQuery(this),		
