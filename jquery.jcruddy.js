@@ -240,6 +240,7 @@
 			var jQuerythis = jQuery(this),	
 				settings = jQuerythis.data("settings"),
 				tmpObjects = jQuerythis.jcruddy("getArrayObjects"),	
+				key="",
 				sReturn = "<tr class='jcruddyTableHeader'>";
 
 			if(settings.dataListFields.length !== 0){
@@ -383,7 +384,7 @@
 			
 			jQuery("#"+jQuerythis.attr("id") +"Dialog .jcruddyDialogItems").append(sHtml);
 
-			if(jQuery("#"+jQuerythis.attr("id") +"Dialog input[name='id']").val() == "" ){
+			if(jQuery("#"+jQuerythis.attr("id") +"Dialog input[name='id']").val() === "" ){
 				jQuery("#"+jQuerythis.attr("id") +"Dialog input[name='id']").val(Math.round((new Date()).getTime()));
 			}
 			
@@ -414,7 +415,7 @@
 		createItem: function (obj) {
 			var jQuerythis = jQuery(this),		
 				settings = jQuerythis.data("settings"),
-				trId = jQuery(this).attr("id")+"Tr";					
+				trId = jQuery(this).attr("id")+"Tr",					
 				sHtml = '';
 
 			if (typeof settings.beforeObjectAdd === "function") { 
@@ -478,7 +479,8 @@
 				trId = jQuery(this).attr("id")+"Tr_"+id,
 				currentTr = jQuery("#"+trId),				
 				settings = jQuerythis.data("settings"),
-				tmpObjects = [];
+				tmpObjects = [],
+				obj = jQuerythis.jcruddy("getArrayObject",id);
 
 			if (typeof settings.beforeObjectMove === "function") { 
 				if (!settings.beforeObjectMove.call(this,obj)) { 
