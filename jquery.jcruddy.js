@@ -232,10 +232,30 @@
 				settings.afterArrayChange.call(this,obj); // brings the scope to the callback
 			}				
 			
-		}			
+		},			
 				
 		
 
+		addItem: function (dialogId) {				
+			var $this = $(this),				
+				settings = $this.data("settings");	
+				
+			$( "#"+dialogId +" .jcDialogHeader span" ).html("Add item" );
+			setDialogHtml($this,[]);			
+			
+			$("#"+dialogId).fadeIn();
+			
+			$('html, body').animate({
+				scrollTop: $("#"+dialogId).offset().top -20
+			}, 500);
+			
+			if (typeof settings.afterDialogShow === "function") { 
+				if (!settings.afterDialogShow.call(this,event)) { 
+					return false;
+				}				
+			}				
+		}		
+		
 
 
 	};
@@ -445,21 +465,9 @@
 					return false;
 				}				
 			}	
-			$( "#"+dialogId +" .jcDialogHeader span" ).html("Add item" );
-			setDialogHtml($this,[]);
 			
+			$this.jcruddy("addItem",dialogId);	
 			
-			$("#"+dialogId).fadeIn();
-			
-			$('html, body').animate({
-				scrollTop: $("#"+dialogId).offset().top -20
-			}, 500);
-			
-			if (typeof settings.afterDialogShow === "function") { 
-				if (!settings.afterDialogShow.call(this,event)) { 
-					return false;
-				}				
-			}				
 		});	
 		return $this;
 	}	

@@ -10,7 +10,8 @@
     padding:10px;
     border:none;
     background-color:#ddd;
-	border-bottom:2px dashed #aaa;    
+	border-bottom:2px dashed #aaa; 
+	vertical-align: middle;	
 }
 
 
@@ -38,6 +39,7 @@
 
 .jcTable tfoot td{
 	padding:0;
+	vertical-align: middle;
 }
 
 .jcTable tfoot i, .jcTable tbody td:last-child a {
@@ -72,7 +74,8 @@
 .jcTable tbody td{
 	padding:3px 0 3px 3px;
 	border: none;
-	}
+	vertical-align: middle;
+}
 
 .jcTable tbody tr:last-child .downButton , .jcTable tbody tr:first-child .upButton {
      visibility: hidden;
