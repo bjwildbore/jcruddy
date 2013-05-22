@@ -1,105 +1,139 @@
-/************************* Base **************************************/
+/* Table css  */
+.jcTable{
+	border:1px solid #eee;
+	width:100%;
+	background-color:#efefef;
+} 
 
-/***
-* Icons
-***/
-.icon{
-  background-color:#ddd;
+.jcTable thead th{
+    text-align:left;
+    padding:10px;
+    border:none;
+    background-color:#ddd;
+	border-bottom:2px dashed #aaa;    
+}
+
+
+.jcTable tfoot a{
+	display:block;
+	width:100%;
+	text-align:right;
+	background-color:#aaa;
+	padding: 3px 0;	
+	color:#fefefe;
+	text-decoration:none;	
+	-webkit-transition: background-color .5s;
+	-moz-transition: background-color .5s;
+	-o-transition: background-color .5s;
+	-ms-transition: background-color .5s;
+	transition: background-color .5s;	
+}	
+
+.jcTable tfoot a span{margin-right:10px; }
+
+.jcTable tfoot a:hover{
+	background-color:#777;	
+	color:#efefef;
+}
+
+.jcTable tfoot td{
+	padding:0;
+}
+
+.jcTable tfoot i, .jcTable tbody td:last-child a {
+    background-color:#ddd;
 	text-decoration:none;	
 	color: #222222;
     display: inline-block;
     font-size: 1.2em;
     text-align: center ;
 	height:30px;	
-	line-height: 30px;		
+	width:30px;
+	line-height: 30px;	
+	margin-right:5px;	
 }
 
-.icon span{
-	padding:0 10px
+.jcTable tfoot i:hover, .jcTable tbody td:last-child a:hover {
+    background-color:#bbb;    
 }
 
-.icon-grey{	
-	background-color:#8DC63F;
-	color:#eee;
-}
-.icon-red{	
-	background-color:#B41000;
-	color:#eee;
-}
-.icon-green{
-	background-color:#8DC63F;
-	color:#eee;
+.jcTable tbody tr:last-child td{
+	border-bottom:2px dashed #ccc;    
 }
 
-/************************* Modules ***********************************/
-
-/***
-* Datatable ******************************
-***/
-.jcruddyTable th {	
-	background-color:#222222;
-	color:#eee;
+.jcTable tbody td:last-child{
+	text-align:right;
 }
 
-.jcruddyTable td ,.jcruddyTable th {	
-	padding:3px 3px;
+.jcTable tbody td:last-child span{
+	display:none;
 }
 
-.jcruddyTable .jcruddyDataRow:last-child .downButton , .jcruddyTable .jcruddyDataRow:nth-child(2) .upButton {
-    display: none;
+.jcTable tbody td{
+	padding:3px 0 3px 3px;
+	border: none;
+	}
+
+.jcTable tbody tr:last-child .downButton , .jcTable tbody tr:first-child .upButton {
+     visibility: hidden;
 }
 
-/***
-* Dialog *********************************
-***/
-.jcruddyDialogItems div{
-	margin-bottom:10px;
+.jcTable tbody tr:nth-child(2n),.jcTable tbody tr:nth-child(2n) td{
+	background-color:#e6e6e6;
 }
 
-.jcruddyDialogItems input{
-	margin-right:5px;
-}
-
-.jcruddyDialogButtons{
-	float:left;
-	width:100%;
-}
-
-.jcruddyDialogCancel{
-	float:left;
-}
-
-.jcruddyDialogSubmit{
-	float:right;
-}
-
-.jcruddyDialog{
-	float:left;
+/* Dialog css  */
+.jcDialog{
+	background-color:#ddd;
+	border:1px solid #ccc;
+	z-index:999;
+		float:left;
 	position:absolute;
 	padding:0;
+	min-width: 40%;
+	
 }
 
-.jcruddyDialogHeader,.jcruddyDialogItems,.jcruddyDialogButtons{
+.jcDialogHeader,.jcDialogItems,.jcDialogButtons{
 	float:left;
-	width:100%;
+	width:96%;
 	clear:both;
-}	
-
-.jcruddyDialogItems{padding:25px}
-
-.jcruddyDialogHeader .icon{
-	float:right;
-}		
-
-.jcruddyDialog h2{
-	padding: 0 0 0 10px;
-	margin:0;
-	float:left;
 }
 
-/************************* Theme *************************************/
-
-.jcruddyDialog{
-	background-color:#ddd;
+.jcDialogHeader,.jcDialogItems{
+	padding:1% 2%;
+	border-bottom: 2px dashed #aaa	
 }
 
+
+.jcDialogHeader{
+    background-color:#eee;    
+}
+
+.jcDialogButtons{
+    background-color:#eee; 
+	width:100%; 
+}
+
+.jcDialogItems > div {padding:5px 0}
+.jcDialogItems > div span {
+    display:block;
+	padding:2px 0 2px 0;    
+}
+
+.jcDialogItems .required span{color:#900}
+
+.jcDialogButtons  a {display:block; float:left;width:50%; text-decoration:none;text-align:center;padding:1% 0;color:#222}
+
+.jcDialogCancel i{margin-right:10px;}
+.jcDialogSubmit i{margin-right:10px;}
+.jcDialogSubmit:hover, .jcDialogCancel:hover{ background-color:#777;	
+	color:#efefef; }
+
+.jcDialogItems input{	
+	margin:0 10px 10px 0;
+}
+
+.jcDialogItems input:not([type="radio"]):not([type="checkbox"]), .jcDialogItems textarea{	
+	width:100%
+}
