@@ -600,7 +600,8 @@
 		$(".jcDialogSubmit", $this).click(function (index, item) {			
 			var tmpObj = {},
 				isValid = true,
-				origId = $("#"+dialogId+" input[name='jcDialogItemId']").val();					
+				origId = $("#"+dialogId+" input[name='jcDialogItemId']").val(),
+				invalidMessage = "Please fill in all required fields";					
 
 			$.each($("#"+dialogId+" input:not(:checkbox):not(:radio),#"+dialogId+" textarea"), function (index,item) {											
 				var field=item.name,
@@ -609,7 +610,7 @@
 				
 				if(isRequired && !value.length){
 					isValid = false;
-					//console.log('not valid');
+					invalidMessage = "Please fill in all required fields";
 				}					
 								
 				if (field !== "jcDialogItemId") {
@@ -625,7 +626,7 @@
 				
 				if(isRequired && !value.length){
 					isValid = false;
-					//console.log('not valid');
+					invalidMessage = "Please fill in all required fields";
 				}	
 				
 				tmpObj[field]=value;										
@@ -645,7 +646,7 @@
 
 				if(isRequired && !values.length){
 					isValid = false;
-					//console.log('not valid');
+					invalidMessage = "Please fill in all required fields";
 				}						
 				
 				tmpObj[field]=values;	
@@ -658,11 +659,29 @@
 					isRequired = ($(item).data('required') == '1') ? true : false;		
 				
 				if(isRequired && !value.length){
-					isValid = false;						
+					isValid = false;
+					invalidMessage = "Please fill in all required fields";					
 				}	
 				
 				tmpObj[field]=value;		
 			});
+
+			$.each($("#"+dialogId+" input[type='url']"), function(index,item) {
+				var field =item.name,
+					value = $(item).val();
+					console.log(field + ' ' + value);
+				
+				if(/^([a-z]([a-z]|\d|\+|-|\.)*):(\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?((\[(|(v[\da-f]{1,}\.(([a-z]|\d|-|\.|_|~)|[!\$&'\(\)\*\+,;=]|:)+))\])|((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=])*)(:\d*)?)(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*|(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)){0})(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value)) {
+				  //alert("valid url");
+				} else {
+				  isValid = false;	
+				  invalidMessage = "Please enter a correct URL";
+				}
+
+				tmpObj[field]=value;		
+				
+			});
+
 			
 			if(isValid){
 				if (origId==="") {
@@ -675,7 +694,7 @@
 					}
 				}
 			} else {
-				alert('Please enter all required fields');
+				alert(invalidMessage);
 			}
 			
 			
